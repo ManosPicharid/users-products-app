@@ -3,9 +3,20 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "node --env-file=.env server.js",
     "dev": "node --env-file=.env --watch server.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules",
+      "/logs"
+    ],
+    "setupFiles": [
+      "dotenv/config"
+    ]
   },
   "author": "",
   "type": "module",
@@ -23,5 +34,10 @@
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0",
     "winston-mongodb": "^6.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
   }
 }

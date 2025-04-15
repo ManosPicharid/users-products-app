@@ -11,7 +11,10 @@ export const findOne = async username => {
 
 export const create = async (data) => {
     const saltOrRounds = 10;
-    const hashedPassword = await bcrypt.hash(data.password, saltOrRounds);
+    let hashedPassword = ""
+    if (data.password) {
+        hashedPassword = await bcrypt.hash(data.password, saltOrRounds);
+    }
     const newUser = new User({
         username: data.username,
         password: hashedPassword,
@@ -20,7 +23,7 @@ export const create = async (data) => {
         email: data.email,
         address: {
             area: data.address.area,
-            road: data.address.road,
+            road: data.address.road
         }
     });
 
@@ -47,4 +50,16 @@ export const deleteByUsername = async (username) => {
 
 export const deleteByEmail = async (email) => {
     return await User.findOneAndDelete({ email: email });
+}
+
+export const findLastInsertedUser = async () => {
+    console.log("Find last inserted user")
+    try {
+        let result = await User.find().sort({ _id: -1 }).limit(1);
+        result = result[0];
+        return result
+    } catch (err) {
+        console.log("Error in finding user:", err);
+        return false
+    }
 }
